@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PolicyGuard</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="pg-header">
+    <div class="pg-logo">
+      <span class="pg-shield">🛡️</span>
+      <span class="pg-brand">PolicyGuard</span>
+    </div>
+    <div class="pg-tagline">AI-powered policy risk scanner</div>
+  </header>
+
+  <!-- States -->
+
+  <!-- Not a policy page -->
+  <div id="state-not-policy" class="pg-state hidden">
+    <div class="pg-state-icon">📄</div>
+    <div class="pg-state-title">No Policy Detected</div>
+    <div class="pg-state-desc">Navigate to a Terms of Service or Privacy Policy page, or click below to scan this page manually.</div>
+    <button id="btn-analyze-now" class="pg-btn pg-btn-primary">🔍 Analyze This Page</button>
+  </div>
+
+  <!-- Analyzing -->
+  <div id="state-analyzing" class="pg-state hidden">
+    <div class="pg-spinner"></div>
+    <div class="pg-state-title">Analyzing Policy…</div>
+    <div class="pg-state-desc">Running the AI pipeline: Extract → Flag → Summarize → Score</div>
+    <div class="pg-pipeline">
+      <div class="pg-pipeline-step active" id="step-extract">📥 Extracting clauses</div>
+      <div class="pg-pipeline-step" id="step-flag">🔍 Flagging risks</div>
+      <div class="pg-pipeline-step" id="step-summarize">✍️ Summarizing</div>
+      <div class="pg-pipeline-step" id="step-score">📊 Scoring</div>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div id="state-error" class="pg-state hidden">
+    <div class="pg-state-icon">⚠️</div>
+    <div class="pg-state-title">Analysis Failed</div>
+    <div id="error-message" class="pg-state-desc pg-error-msg"></div>
+    <div class="pg-backend-hint">
+      💡 Make sure the backend is running:<br/>
+      <code>cd policyguard/backend && python main.py</code>
+    </div>
+    <button id="btn-retry" class="pg-btn pg-btn-secondary">🔄 Retry</button>
+  </div>
+
+  <!-- Results -->
+  <div id="state-result" class="pg-state hidden">
+    <!-- Score circle + verdict -->
+    <div class="pg-result-header" id="result-header">
+      <div class="pg-score-wrap">
+        <div class="pg-score-circle" id="score-circle">
+          <span class="pg-score-num" id="score-num">--</span>
+          <span class="pg-score-label">/100</span>
+        </div>
+      </div>
+      <div class="pg-verdict-wrap">
+        <div class="pg-rating" id="rating-text">--</div>
+        <div class="pg-final-summary" id="final-summary"></div>
+      </div>
+    </div>
+
+    <!-- Breakdown pills -->
+    <div class="pg-breakdown" id="breakdown">
+      <span class="pg-pill pg-pill-red hidden" id="pill-high">🔴 <span id="count-high">0</span> high</span>
+      <span class="pg-pill pg-pill-yellow hidden" id="pill-medium">🟡 <span id="count-medium">0</span> medium</span>
+      <span class="pg-pill pg-pill-green hidden" id="pill-low">🟢 <span id="count-low">0</span> low</span>
+    </div>
+
+    <!-- Flag list -->
+    <div class="pg-flags" id="flags-list"></div>
+
+    <!-- No flags message -->
+    <div id="no-flags" class="pg-no-flags hidden">
+      ✅ No significant risks detected in this policy.
+    </div>
+
+    <!-- Meta footer -->
+    <div class="pg-meta" id="result-meta"></div>
+
+    <!-- Actions -->
+    <div class="pg-actions">
+      <button id="btn-reanalyze" class="pg-btn pg-btn-ghost">🔄 Re-analyze</button>
+    </div>
+  </div>
+
+  <!-- Backend health indicator -->
+  <div class="pg-backend-status">
+    <span class="pg-backend-dot" id="backend-dot"></span>
+    <span class="pg-backend-label" id="backend-label">Checking backend…</span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

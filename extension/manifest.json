@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "PolicyGuard",
+  "version": "1.0.0",
+  "description": "Instantly analyzes Terms of Service & Privacy Policies with AI — gives you a plain-English risk score before you click Accept.",
+
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "PolicyGuard"
+  },
+
+  "icons": {
+    "16":  "icons/icon16.png",
+    "48":  "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["panel/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
